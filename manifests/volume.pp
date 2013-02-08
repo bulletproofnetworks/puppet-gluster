@@ -13,19 +13,16 @@ define gluster::volume(
   $replicate    = 0,
   $transport    = tcp,
 ) {
-#  $peergrep     = regsubst($hostname, '(\.)', '\\.', 'G')
   $brickvals       = join($bricks, " ")
 
-  if ( $stripe > 0 )    { $stripecmd    = "stripe $stripe"        }
-  if ( $replicate > 0 ) { $replicatecmd = "replicated $replicate" }
-    
-
-  exec { "gluster volume create $name transport $transport $stripecmd $replicatecmd $brickvals":
+  exec { "/opt/local/bin/puppet-gluster.sh ensure_volume $name transport $transport $stripe $replicate $brickvals":
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
     provider    => shell,
-    onlyif      => "! (gluster volume info $name)",
   }
 
   Service <| tags == 'gluster' |>  ->
-  Exec [ "gluster volume create $name transport $transport $stripecmd $replicatecmd $brickvals" ]
+  Exec ["/opt/local/bin/puppet-gluster.sh ensure_volume $name transport $transport $stripe $replicate $brickvals" ]
+
+  File ['/opt/local/bin/puppet-gluster.sh'] ->
+  Exec ["/opt/local/bin/puppet-gluster.sh ensure_volume $name transport $transport $stripe $replicate $brickvals" ]
 }
