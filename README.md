@@ -16,7 +16,7 @@ Example usage
 node /^gluster-\d+\.example\.com$/ {
   class { gluster:
     peers       => hiera("gluster::peers"),
-    bricks      => hiera("gluster::bricks"),
+    volumes     => hiera("gluster::volumes"),
   }
 }
 
