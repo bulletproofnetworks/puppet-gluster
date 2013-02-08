@@ -35,18 +35,19 @@ class gluster::service {
     tag         => 'glusterfsd-nfs'
   }
 
-  Service['glusterd']           ->
-  Service['glusterfsd-portmap'] ->
-  Service['glusterfsd-rpcbind'] ->
-  Service['glusterfsd-nfs']     ->
+  Package <| tag == 'gluster' |> ->
+  Service['glusterd']            ->
+  Service['glusterfsd-portmap']  ->
+  Service['glusterfsd-rpcbind']  ->
+  Service['glusterfsd-nfs']      ->
   Service['glusterfsd']
 
-  Service['glusterfsd-portmap'] ~>
+  Service['glusterfsd-portmap']  ~>
   Service['glusterfsd']
 
-  Service['glusterfsd-rpcbind'] ~>
+  Service['glusterfsd-rpcbind']  ~>
   Service['glusterfsd']
 
-  Service['glusterfsd-nfs']     ~>
+  Service['glusterfsd-nfs']      ~>
   Service['glusterfsd']
 }
