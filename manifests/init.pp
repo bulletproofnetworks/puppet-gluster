@@ -10,6 +10,6 @@ class gluster(
   include gluster::service
   include gluster::helper
 
-  create_resources('gluster::peers', $peers)
-  create_resources('gluster::volumes', $volumes)
+  create_resources('gluster::peer', $peers)
+  create_resources('gluster::volume', $volumes)
 }

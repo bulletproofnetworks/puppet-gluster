@@ -8,13 +8,12 @@ define gluster::peer(
 
   # Do unless current system is peer
   if ( $hostname != $::fqdn ) {
-    exec { "gluster probe $hostname":
+    exec { "gluster peer probe $hostname":
       path        => '/bin:/sbin:/usr/bin:/usr/sbin',
-      onlyif      => "! (gluster peer status | egrep -q '$peergrep')"
+      onlyif      => "! (gluster peer status | egrep -q '$peergrep')",
       provider    => shell,
     }
+    Service <| tag == 'gluster' |>   ->
+    Exec ["gluster peer probe $hostname"]
   }
-
-  Service <| tags == 'gluster' |>  ->
-  Exec ["gluster probe $hostname"]
 }

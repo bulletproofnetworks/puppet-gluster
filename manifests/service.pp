@@ -2,52 +2,51 @@
 # Starts the service
 #
 class gluster::service {
+  $osmajrelease = regsubst($operatingsystemrelease, '^(\d+)\..*', '\1')
   service { 'glusterd':
     ensure      => running,
-    enabled     => true,
+    enable      => true,
     tag         => 'gluster',
   }
 
-  service { 'glusterfsd-portmap':
-    name        => 'portmap',
-    ensure      => running,
-    enabled     => true,
-    tag         => 'glusterfsd-portmap'
+  if ( $operatingsystem == 'RedHat' and $osmajrelease > 5 ) {
+    service { 'glusterfsd-portmap':
+      name        => 'portmap',
+      ensure      => running,
+      enable      => true,
+      tag         => 'glusterfsd-rpcbind'
+    }
   }
 
   service { 'glusterfsd-rpcbind':
     name        => 'rpcbind',
     ensure      => running,
-    enabled     => true,
-    tag         => 'glusterfsd-portmap'
+    enable      => true,
+    tag         => 'glusterfsd-rpcbind'
   }
 
-  service { 'glusterfsd':
-    ensure      => running,
-    enabled     => true,
-    tag         => 'glusterfsd'
-  }
+#  service { 'glusterfsd':
+#    ensure      => running,
+#    enable      => true,
+#    tag         => 'glusterfsd'
+#  }
 
   service { 'glusterfsd-nfs':
     name        => 'nfs',
     ensure      => stopped,
-    enabled     => false,
+    enable      => false,
     tag         => 'glusterfsd-nfs'
   }
 
-  Package <| tag == 'gluster' |> ->
-  Service['glusterd']            ->
-  Service['glusterfsd-portmap']  ->
-  Service['glusterfsd-rpcbind']  ->
-  Service['glusterfsd-nfs']      ->
-  Service['glusterfsd']
+  Package <| tag == 'gluster' |>  ->
+  Service['glusterd']             #->
+#  Service['glusterfsd-rpcbind']   ->
+#  Service['glusterfsd-nfs']       ->
+#  Service['glusterfsd']
 
-  Service['glusterfsd-portmap']  ~>
-  Service['glusterfsd']
+#  Service['glusterfsd-rpcbind']   ~>
+#  Service['glusterfsd']
 
-  Service['glusterfsd-rpcbind']  ~>
-  Service['glusterfsd']
-
-  Service['glusterfsd-nfs']      ~>
-  Service['glusterfsd']
+#  Service['glusterfsd-nfs']       ~>
+#  Service['glusterfsd']
 }

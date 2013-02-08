@@ -3,7 +3,7 @@
 class gluster::install {
   case $osfamily {
     'redhat': {
-      gluster::install::redhat
+      include gluster::install::redhat
     }
     default:  { fail("$osfamily not supported") }
   }

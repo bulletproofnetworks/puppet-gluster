@@ -15,14 +15,14 @@ define gluster::volume(
 ) {
   $brickvals       = join($bricks, " ")
 
-  exec { "/opt/local/bin/puppet-gluster.sh ensure_volume $name transport $transport $stripe $replicate $brickvals":
+  exec { "/opt/local/bin/puppet-gluster.sh ensure_volume $name $transport $stripe $replicate $brickvals":
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
     provider    => shell,
   }
 
-  Service <| tags == 'gluster' |>  ->
-  Exec ["/opt/local/bin/puppet-gluster.sh ensure_volume $name transport $transport $stripe $replicate $brickvals" ]
+  Service <| tag == 'gluster' |>    ->
+  Exec ["/opt/local/bin/puppet-gluster.sh ensure_volume $name $transport $stripe $replicate $brickvals" ]
 
   File ['/opt/local/bin/puppet-gluster.sh'] ->
-  Exec ["/opt/local/bin/puppet-gluster.sh ensure_volume $name transport $transport $stripe $replicate $brickvals" ]
+  Exec ["/opt/local/bin/puppet-gluster.sh ensure_volume $name $transport $stripe $replicate $brickvals" ]
 }

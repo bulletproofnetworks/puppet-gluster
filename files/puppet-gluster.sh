@@ -11,7 +11,7 @@ prune_peers() {
   peergrep="$(echo $* | sed -e 's/ /|/g')"
   gluster peer status \
     | egrep -v "($peergrep)" \
-    | awk '/^Hostname:/{print $2}'
+    | awk '/^Hostname:/{print $2}' \
     | xargs -n 1 gluster peer detach
 }
 
@@ -53,7 +53,7 @@ create_volume() {
   replicate=$4
   shift 4
   [ "$stripe" -gt 0 ] &&    stripecmd="stripe $stripe"
-  [ "$replicate" -gt 0 ] && replicatecmd="replicated $replicate"
+  [ "$replicate" -gt 0 ] && replicatecmd="replica $replicate"
   brickvals="$*"
 
   validate_brick_peers $brickvals
@@ -66,7 +66,7 @@ create_volume() {
 }
 
 analyze_volume() {
-
+  true
 }
 
 ensure_volume() {
@@ -81,6 +81,11 @@ ensure_volume() {
   else
     analyze_volume $name $transport $stripe $replicate $*
   fi
+
+  if [ "$e" -eq 0 ]; then
+    gluster volume status $name \
+      | grep -q 'not started' \
+      && gluster volume start $name
   return $e
 }
 
@@ -95,6 +100,7 @@ case $1 in
     ;;
   ensure_volume)
     shift
+    echo $* > /tmp/log.txt
     ensure_volume $*
     ;;
 esac
