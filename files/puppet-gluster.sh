@@ -86,6 +86,7 @@ ensure_volume() {
     gluster volume status $name \
       | grep -q 'not started' \
       && gluster volume start $name
+  fi
   return $e
 }
 
