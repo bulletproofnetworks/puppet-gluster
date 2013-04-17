@@ -59,7 +59,7 @@ create_volume() {
   validate_brick_peers $brickvals
   e=$?
   if [ $e -eq 0 ]; then
-    gluster volume create $name transport $transport $stripecmd $replicatecmd $brickvals
+    gluster volume create $name $stripecmd $replicatecmd transport $transport $brickvals
     e=$?
   fi
   return $e
