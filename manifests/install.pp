@@ -11,6 +11,7 @@ class gluster::install {
           include gluster::install::ubuntu
         }
         default: { fail("$::operatingsystem not supported") }
+      }
     }
     default: { fail("$::osfamily not supported") }
   }
