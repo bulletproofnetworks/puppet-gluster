@@ -11,6 +11,8 @@ class gluster(
   include gluster::helper
 notify {"Running with \$peers ${peers} defined": withpath => true}
 notify {"Running with \$volumes ${volumes} defined": withpath => true}
+notice("Running with \$peers ${peers} ID defined")
+notice("Running with \$volumes ${volumes} ID defined")
   create_resources('gluster::peer', $peers)
   create_resources('gluster::volume', $volumes)
 }
