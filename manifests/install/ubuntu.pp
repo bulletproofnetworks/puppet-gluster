@@ -5,5 +5,6 @@ class gluster::install::ubuntu {
   package { [ 'glusterfs-client', 'glusterfs-server' ]:
     ensure      => installed,
     tag         => 'gluster',
+    before      => Service['glusterfs-server'],
   }
 }

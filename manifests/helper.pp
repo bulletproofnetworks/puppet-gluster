@@ -3,7 +3,13 @@
 #
 class gluster::helper {
 
-  file { '/opt/local/bin':
+  file { 
+    '/opt/local':
+    ensure      => directory,
+    owner       => 'root',
+    group       => 'root',
+    mode        => '0744';
+    '/opt/local/bin':
     ensure      => directory,
     owner       => 'root',
     group       => 'root',
@@ -15,7 +21,4 @@ class gluster::helper {
     group       => 'root',
     mode        => '0544',
   }
-
-  File['/opt/local/bin']                   ->
-  File['/opt/local/bin/puppet-gluster.sh']
 }
