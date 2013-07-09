@@ -80,11 +80,12 @@ ensure_volume() {
     e=$?
   else
     analyze_volume $name $transport $stripe $replicate $*
+    e=$?
   fi
 
-  if [ "$e" -eq 0 ]; then
+  if [ $e -eq 0 ]; then
     gluster volume status $name \
-      | grep -q 'not started' \
+      2>&1 | grep -q 'not started' \
       && gluster volume start $name
   fi
   return $e
