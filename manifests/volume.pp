@@ -13,7 +13,7 @@ define gluster::volume(
   $replicate    = 0,
   $transport    = tcp,
 ) {
-  $brickvals       = join($bricks, " ")
+  $brickvals       = join($bricks, ' ')
 
   exec { "/opt/local/bin/puppet-gluster.sh ensure_volume $name $transport $stripe $replicate $brickvals":
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
