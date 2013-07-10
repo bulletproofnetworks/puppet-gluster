@@ -4,6 +4,7 @@
 class gluster::client(
   $device,
   $mountpoint=$name,
+  $mountoptions='fuse-opt=allow_other',
 ) {
   include gluster::install
 
@@ -15,6 +16,7 @@ class gluster::client(
     ensure  => mounted,
     device  => $device,
     fstype  => 'glusterfs',
+    options => $mountoptions,
     require => [
       File[$mountpoint],
       Package['glusterfs-client'],
