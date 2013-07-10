@@ -12,12 +12,12 @@ class gluster::client(
   }
 
   mount { $mountpoint:
-    device => "$device",
-    fstype => "glusterfs",
-    ensure => mounted,
+    ensure  => mounted,
+    device  => $device,
+    fstype  => 'glusterfs',
     require => [
       File[$mountpoint],
-      Package["glusterfs-client"],
+      Package['glusterfs-client'],
     ],
   }
 }
