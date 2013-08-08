@@ -12,5 +12,5 @@ class gluster(
   create_resources('gluster::peer', $peers)
   create_resources('gluster::volume', $volumes)
 
-  class { gluster::peer } -> class { gluster::volume } -> class { gluster::client }
+  class { 'gluster::peer': } -> class { 'gluster::volume': } -> class { 'gluster::client': }
 }
