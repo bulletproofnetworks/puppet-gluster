@@ -11,4 +11,6 @@ class gluster(
   include gluster::helper
   create_resources('gluster::peer', $peers)
   create_resources('gluster::volume', $volumes)
+
+  Class['gluster::peer'] -> Class['gluster::volume'] -> Class['gluster::client']
 }
