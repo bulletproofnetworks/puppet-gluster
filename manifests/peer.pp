@@ -8,7 +8,7 @@ define gluster::peer(
   $peergrep     = regsubst($hostname, '\..*$', '')
 
   # Do unless current system is peer
-  if ( $::hostname != $peergrep ) {
+  if ( $::hostname =~ /$peergrep/ ) {
     notify {"****************>>>>>>>>>>\$peergrep is ${peergrep} and \$::hostname is ${::hostname} what about \$hostname (${hostname})":}
     exec { "gluster peer probe $hostname":
       path        => '/bin:/sbin:/usr/bin:/usr/sbin',
