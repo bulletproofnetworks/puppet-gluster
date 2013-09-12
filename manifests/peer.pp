@@ -4,7 +4,8 @@
 define gluster::peer(
   $hostname,
 ) {
-  $peergrep     = regsubst($hostname, '(\.)', '\\.', 'G')
+  # be relaxed, only grep for the hostname (not fqdn)
+  $peergrep     = regsubst($hostname, '\..*$', '')
 
   # Do unless current system is peer
   if ( $hostname != $::fqdn ) {

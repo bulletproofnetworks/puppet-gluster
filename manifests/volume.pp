@@ -17,6 +17,7 @@ define gluster::volume(
 
   exec { "/opt/local/bin/puppet-gluster.sh ensure_volume $name $transport $stripe $replicate $brickvals":
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
+    unless      => "gluster volume info $name",
     provider    => shell,
   }
 
