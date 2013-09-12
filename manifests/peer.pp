@@ -8,6 +8,9 @@ define gluster::peer(
   $peergrep     = regsubst($hostname, '\..*$', '')
   $fqdngrep     = regsubst($::fqdn, '\..*$', '')
 
+notify {"****************>>>>>>>>>>\$peergrep is ${peergrep} ":}
+notify {"****************>>>>>>>>>>\$fqdngrep is ${fqdngrep} ":}
+
   # Do unless current system is peer
   if ( $peergrep != $fqdngrep ) {
     exec { "gluster peer probe $hostname":
