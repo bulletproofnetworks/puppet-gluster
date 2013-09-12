@@ -6,12 +6,9 @@ define gluster::peer(
 ) {
   # be relaxed, only grep for the hostname (not fqdn)
   $peergrep     = regsubst($hostname, '\..*$', '')
-  $fqdngrep     = regsubst($::fqdn, '\..*$', '')
-
-notify {"****************>>>>>>>>>>\$peergrep is ${peergrep} ":}
 
   # Do unless current system is peer
-  if ( $peergrep != $fqdngrep ) {
+  if ( $::hostname != $peergrep ) {
     exec { "gluster peer probe $hostname":
       path        => '/bin:/sbin:/usr/bin:/usr/sbin',
       onlyif      => "! (gluster peer status | egrep -q '$peergrep')",
