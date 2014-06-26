@@ -8,13 +8,12 @@ define gluster::peer(
   $peergrep     = regsubst($hostname, '\..*$', '')
 
   # Do unless current system is peer
-  if ( $::hostname =~ /$peergrep/ ) {
+  if $::hostname != "${peergrep}" {
     exec { "gluster peer probe $hostname":
+      tag         => 'peer_probe',
       path        => '/bin:/sbin:/usr/bin:/usr/sbin',
       onlyif      => "! (gluster peer status | egrep -q '$peergrep')",
       provider    => shell,
     }
-    Service <| tag == 'gluster' |>   ->
-    Exec ["gluster peer probe $hostname"]
   }
 }

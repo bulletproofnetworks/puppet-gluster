@@ -16,6 +16,7 @@ define gluster::volume(
   $brickvals       = join($bricks, ' ')
 
   exec { "/opt/local/bin/puppet-gluster.sh ensure_volume $vname $transport $stripe $replicate $brickvals":
+    tag         => 'gluster_volume',
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
     unless      => "gluster volume info $vname",
     provider    => shell,

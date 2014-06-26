@@ -14,6 +14,7 @@ class gluster::client(
 
   mount { $mountpoint:
     ensure  => mounted,
+    tag     => 'gluster_mount',
     device  => $device,
     fstype  => 'glusterfs',
     options => $mountoptions,
