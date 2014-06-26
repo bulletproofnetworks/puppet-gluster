@@ -20,6 +20,8 @@ define gluster::volume(
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
     unless      => "gluster volume info $vname",
     provider    => shell,
+    tries       => 5,
+    try_sleep   => 4,
   }
 
   Service <| tag == 'gluster' |>    ->

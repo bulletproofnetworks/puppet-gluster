@@ -14,6 +14,8 @@ define gluster::peer(
       path        => '/bin:/sbin:/usr/bin:/usr/sbin',
       onlyif      => "! (gluster peer status | egrep -q '$peergrep')",
       provider    => shell,
+      tries       => 5,
+      try_sleep   => 4,
     }
   }
 }
