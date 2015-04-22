@@ -15,6 +15,33 @@ define gluster::volume(
 ) {
   $brickvals       = join($bricks, ' ')
 
+  $brickpath       = split("${bricks[0]}", ':')
+
+  $brickpathdirs   = split("${brickpath[1]}", '[/]')
+
+  file { "/${brickpathdirs[1]}":
+    ensure => directory,
+  }
+
+# FIXME: give puppet's lack of "mkdir -p" or iteration, doing this up to 4 levles deep...
+# /me sigh
+#
+  if ( "${brickpathdirs[2]}" ) {
+    file { "/${brickpathdirs[1]}/${brickpathdirs[2]}":
+      ensure => directory,
+    }
+  }
+  if ( "${brickpathdirs[3]}" ) {
+    file { "/${brickpathdirs[1]}/${brickpathdirs[2]}/${brickpathdirs[3]}":
+      ensure => directory,
+    }
+  }
+  if ( "${brickpathdirs[4]}" ) {
+    file { "/${brickpathdirs[1]}/${brickpathdirs[2]}/${brickpathdirs[3]}/${brickpathdirs[4]}":
+      ensure => directory,
+    }
+  }
+
   exec { "/opt/local/bin/puppet-gluster.sh ensure_volume $vname $transport $stripe $replicate $brickvals":
     tag         => 'gluster_volume',
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
