@@ -23,7 +23,7 @@ BEGIN{
   FS=":"
 }
 
-! /^[a-zA-Z][^\.]*(\.[^\.]+)*[^:]:\/.*$/ {
+! /^[a-zA-Z0-9][^\.]*(\.[^\.]*)*[^:]:\/.*$/ {
   print "FAIL OF EPICNESS"
   exit 1;
 }
@@ -59,7 +59,7 @@ create_volume() {
   validate_brick_peers $brickvals
   e=$?
   if [ $e -eq 0 ]; then
-    gluster volume create $name $stripecmd $replicatecmd transport $transport $brickvals
+    gluster volume create $name $stripecmd $replicatecmd transport $transport $brickvals force
     e=$?
   fi
   return $e
