@@ -26,9 +26,12 @@ define gluster::volume(
 # FIXME: give puppet's lack of "mkdir -p" or iteration, doing this up to 4 levles deep...
 # /me sigh
 #
+
   if ( "${brickpathdirs[2]}" ) {
-    file { "/${brickpathdirs[1]}/${brickpathdirs[2]}":
-      ensure => directory,
+    if ! defined(File["/${brickpathdirs[1]}/${brickpathdirs[2]}"]) {
+     file { "/${brickpathdirs[1]}/${brickpathdirs[2]}":
+        ensure => directory,
+      }
     }
   }
   if ( "${brickpathdirs[3]}" ) {
